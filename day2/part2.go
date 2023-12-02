@@ -6,22 +6,14 @@ import (
 	"strings"
 )
 
-func P1(scanner *bufio.Scanner, balls_available map[string]int) int {
-
+func P2(scanner *bufio.Scanner) int {
 	sum := 0
 
-out:
 	for scanner.Scan() {
+
+		minimum_balls_needed := make(map[string]int)
 		split := strings.Split(scanner.Text(), ":")
-		game_name := split[0]
 		rounds_played := split[1]
-		game_split := strings.Split(game_name, " ")
-		game_id, err := strconv.Atoi(game_split[1])
-
-		if err != nil {
-			panic(err)
-		}
-
 		rounds := strings.Split(rounds_played, ";")
 
 		for _, round := range rounds {
@@ -41,19 +33,20 @@ out:
 
 				colour := picked_split[1]
 
-				if balls_available[colour] == 0 {
-					continue out
-				}
+				test := minimum_balls_needed[colour]
 
-				for available_colour, available_count := range balls_available {
-					if colour == available_colour && available_count < count {
-						continue out
-					}
+				if count > test {
+					minimum_balls_needed[colour] = count
 				}
 			}
 		}
 
-		sum += game_id
+		value := 1
+		for _, count := range minimum_balls_needed {
+			value *= count
+		}
+
+		sum += value
 	}
 
 	return sum

@@ -15,7 +15,12 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
-	sum := P21(scanner)
+	balls_available := make(map[string]int)
+	balls_available["red"] = 12
+	balls_available["green"] = 13
+	balls_available["blue"] = 14
+
+	sum := P1(scanner, balls_available)
 
 	fmt.Println(fmt.Sprintf("Answer: %d", sum))
 }
